@@ -12,7 +12,7 @@ permissions:
       contents: read
 
 env:
-  AZCLI_VERSION: 2.20.0
+  AZCLI_VERSION: 2.30.0
   DOTNET_VERSION: 3.1.x
   PULUMI_VERSION: 3.1.0
   PULUMI_STORAGE_ACCOUNT: ${{ secrets.STATE_STORAGE_ACCOUNT }}
