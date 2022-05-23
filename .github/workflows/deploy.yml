@@ -70,7 +70,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_PRINCIPAL }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Get SAS expiry
         run:  |
@@ -82,7 +84,7 @@ jobs:
         with:
           azcliversion: ${{ env.AZCLI_VERSION }}
           inlineScript: |
-            AZURE_STORAGE_SAS_TOKEN=$(az storage container generate-sas --subscription ${{ fromJSON(secrets.AZURE_PRINCIPAL).subscriptionId }} --account-name ${{ env.PULUMI_STORAGE_ACCOUNT }} \
+            AZURE_STORAGE_SAS_TOKEN=$(az storage container generate-sas --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} --account-name ${{ env.PULUMI_STORAGE_ACCOUNT }} \
             -n ${{ env.PULUMI_CONTAINER }} --https-only --permissions rwl --expiry ${{ env.SAS_TOKEN_EXPIRATION }} -o tsv)
             echo AZURE_STORAGE_SAS_TOKEN=$AZURE_STORAGE_SAS_TOKEN >> $GITHUB_ENV
 
@@ -100,10 +102,6 @@ jobs:
           cloud-url: azblob://${{ env.PULUMI_CONTAINER }}
           upsert: true
         env:
-          ARM_CLIENT_ID: ${{ fromJSON(secrets.AZURE_PRINCIPAL).clientId }}
-          ARM_CLIENT_SECRET: ${{ fromJSON(secrets.AZURE_PRINCIPAL).clientSecret }}
-          ARM_TENANT_ID: ${{ fromJSON(secrets.AZURE_PRINCIPAL).tenantId }}
-          ARM_SUBSCRIPTION_ID: ${{ fromJSON(secrets.AZURE_PRINCIPAL).subscriptionId }}
           PULUMI_CONFIG_PASSPHRASE: ${{ secrets.PULUMI_PASSPHRASE }}
           AZURE_STORAGE_ACCOUNT: ${{ env.PULUMI_STORAGE_ACCOUNT }}
           AZURE_KEYVAULT_AUTH_VIA_CLI: true
