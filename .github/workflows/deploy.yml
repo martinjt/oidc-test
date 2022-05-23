@@ -7,6 +7,10 @@ on:
     branches:
       - main
 
+permissions:
+      id-token: write
+      contents: read
+
 env:
   AZCLI_VERSION: 2.20.0
   DOTNET_VERSION: 3.1.x
