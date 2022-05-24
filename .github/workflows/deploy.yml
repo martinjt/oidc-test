@@ -89,7 +89,7 @@ jobs:
           azcliversion: ${{ env.AZCLI_VERSION }}
           inlineScript: |
             AZURE_STORAGE_SAS_TOKEN=$(az storage container generate-sas --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} --account-name ${{ env.PULUMI_STORAGE_ACCOUNT }} \
-            -n ${{ env.PULUMI_CONTAINER }} --https-only --permissions rwl --expiry ${{ env.SAS_TOKEN_EXPIRATION }} -o tsv)
+            -n ${{ env.PULUMI_CONTAINER }} --https-only --permissions rwld --expiry ${{ env.SAS_TOKEN_EXPIRATION }} -o tsv)
             echo AZURE_STORAGE_SAS_TOKEN=$AZURE_STORAGE_SAS_TOKEN >> $GITHUB_ENV
 
       - name: Download Build Artifact
